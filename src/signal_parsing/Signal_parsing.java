@@ -22,10 +22,11 @@ public class Signal_parsing {
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Pat\\Desktop\\hello\\02-chan1-back.txt"));
+    public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException{
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Pat\\Desktop\\hello\\03-mediach6b.txt"));
         String line;
         while ((line = br.readLine()) != null) {
+            Thread.sleep(1000);
             float signalStrength = 0;
             float seconds = getSecond(line);
             int i = 0;
@@ -35,10 +36,12 @@ public class Signal_parsing {
                 line = br.readLine();
             }
             
-            float distance = 0;
-            float n = 4;
-            System.out.print(seconds + "  ");
-            System.out.println(signalStrength/i);
+            double distance = 0;
+            double n = 5;
+            distance = Math.pow(10,((10+(-signalStrength/i))/(10*n)) );
+            System.out.print("at " + seconds + "seonds" + " the signal strenth was. ");
+            System.out.print(signalStrength/i +"dBm, ");
+            System.out.println("     This is assiated with a distance of " + distance + "meters given the environment.");
         }
 
     }
