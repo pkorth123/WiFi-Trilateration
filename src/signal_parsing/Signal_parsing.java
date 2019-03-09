@@ -41,7 +41,7 @@ public class Signal_parsing {
             distance = Math.pow(10,((10+(-signalStrength/i))/(10*n)) );
             System.out.print("at " + seconds + " seconds" + " the signal strength was ");
             System.out.print(signalStrength/i +"dBm, ");
-            System.out.println("This is associated with a distance of " + distance + " meters given and n-value of " + n + ".");
+            System.out.println("This is associated with a distance of " + distance + " meters given an n-value of " + n + ".");
             System.out.println();
         }
 
