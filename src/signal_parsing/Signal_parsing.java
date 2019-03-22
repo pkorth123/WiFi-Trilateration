@@ -26,18 +26,18 @@ public class Signal_parsing {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         int portNumber = 5432;
-        String host = "192.168.1.59";
-        String line;
-        getLines(host, portNumber);
+        String host = "192.168.1.58";
+        getDistance(host, portNumber);
     }
-        // parse signal strength out
+    // parse signal strength out
+
     public static float getSignalStrength(String line) {
         float signal = 0;
-        if (line != null){
-        Pattern p = Pattern.compile("[-][0-9][0-9]");
-        Matcher m = p.matcher(line);
-        m.find();
-        signal = Float.parseFloat(m.group());
+        if (line != null) {
+            Pattern p = Pattern.compile("[-][0-9][0-9]");
+            Matcher m = p.matcher(line);
+            m.find();
+            signal = Float.parseFloat(m.group());
         }
         return signal;
     }
@@ -52,23 +52,20 @@ public class Signal_parsing {
         return second;
     }
 
-    public static String getLines(String host, int portNumber) throws IOException {
+    public static float getDistance(String host, int portNumber) throws IOException {
 
         Socket liveDump = new Socket(host, portNumber);
         BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
         String line = null;
-
+        float distance = 0;
+        float n = (float) 5;
         while ((line = in.readLine()) != null) {
             line = in.readLine();
-            System.out.println(getSignalStrength(line));
+
+            distance = (float) Math.pow(10, ((10 + (-(getSignalStrength(line)))) / (10 * n)));
+            System.out.println(distance);
         }
-        return null;
-    }
-
-    public static float getDistance(int signalStrength, float n) {
-        float distance = 0;
-        distance = (float) Math.pow(10, ((10 + (-signalStrength)) / (10 * n)));
         return distance;
-
     }
+
 }
