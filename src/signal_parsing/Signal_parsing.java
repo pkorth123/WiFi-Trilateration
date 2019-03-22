@@ -58,7 +58,7 @@ public class Signal_parsing {
         BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
         String line = null;
         float distance = 0;
-        float n = (float) 5;
+        float n = (float) 6;
         while ((line = in.readLine()) != null) {
             line = in.readLine();
 
