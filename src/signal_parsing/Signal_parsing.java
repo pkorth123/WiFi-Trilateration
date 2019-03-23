@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,8 +24,20 @@ public class Signal_parsing {
 //removed main method, should only have to call getDistance() to start printing values
 
     public static void main(String[] args) throws IOException {
-        getDistance("192.168.1.59", 5432, 6);
-
+        new Thread(() -> {
+            try {
+                getDistance("192.168.1.59", 5432, 6);
+            } catch (IOException ex) {
+                Logger.getLogger(Signal_parsing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
+        new Thread(() -> {
+            try {
+                getDistance("192.168.1.58", 1111, 6);
+            } catch (IOException ex) {
+                Logger.getLogger(Signal_parsing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
     }
 
     public static float getSignalStrength(String line) {
@@ -61,11 +75,11 @@ public class Signal_parsing {
             while ((line = in.readLine()) != null && (startTime < (startTime + 1000))) {
                 i++;
                 signal += getSignalStrength(line);
-                signal = (signal/i);
+                signal = (signal / i);
 
             }
             distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
-            System.out.println(distance);
+            System.out.println(distance + "   " + host);
         }
         return distance;
 
