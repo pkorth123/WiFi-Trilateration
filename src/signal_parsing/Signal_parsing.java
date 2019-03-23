@@ -19,17 +19,12 @@ import java.net.*;
  * @author Pat
  */
 public class Signal_parsing {
+//removed main method, should only have to call getDistance() to start printing values
 
-    /**
-     * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
-        int portNumber = 5432;
-        String host = "192.168.1.58";
-        getDistance(host, portNumber);
+    public static void main(String[] args) throws IOException {
+        getDistance("192.168.1.59", 5432, 6);
+
     }
-    // parse signal strength out
 
     public static float getSignalStrength(String line) {
         float signal = 0;
@@ -52,20 +47,28 @@ public class Signal_parsing {
         return second;
     }
 
-    public static float getDistance(String host, int portNumber) throws IOException {
+    public static float getDistance(String host, int portNumber, float n) throws IOException {
 
         Socket liveDump = new Socket(host, portNumber);
         BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
         String line = null;
         float distance = 0;
-        float n = (float) 6;
-        while ((line = in.readLine()) != null) {
-            line = in.readLine();
 
-            distance = (float) Math.pow(10, ((10 + (-(getSignalStrength(line)))) / (10 * n)));
+        while ((line = in.readLine()) != null) {
+            float signal = getSignalStrength(line);
+            float startTime = System.currentTimeMillis();
+            int i = 0;
+            while ((line = in.readLine()) != null && (startTime < (startTime + 1000))) {
+                i++;
+                signal += getSignalStrength(line);
+                signal = (signal/i);
+
+            }
+            distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
             System.out.println(distance);
         }
         return distance;
+
     }
 
 }
