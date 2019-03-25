@@ -6,7 +6,6 @@
 package signal_parsing;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,18 +25,27 @@ public class Signal_parsing {
     public static void main(String[] args) throws IOException {
         new Thread(() -> {
             try {
-                getDistance("192.168.1.59", 5432, 6);
+               float dist57 = getDistance("192.168.1.57", 5432, 6);
             } catch (IOException ex) {
                 Logger.getLogger(Signal_parsing.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
         new Thread(() -> {
             try {
-                getDistance("192.168.1.58", 1111, 6);
+                float dist58 = getDistance("192.168.1.58", 5433, 6);
             } catch (IOException ex) {
                 Logger.getLogger(Signal_parsing.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
+        new Thread(() -> {
+            try {
+                float dist59 = getDistance("192.168.1.59", 5434, 6);
+            } catch (IOException ex) {
+                Logger.getLogger(Signal_parsing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }).start();
+        
+     //need some sorta statements here to start to match up out distances to times/ips
     }
 
     public static float getSignalStrength(String line) {
