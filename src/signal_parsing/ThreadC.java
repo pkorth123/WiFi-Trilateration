@@ -18,7 +18,7 @@ public class ThreadC extends Thread {
 
         try {
             synchronized (lock) {
-                if ((lock.flag == 1) || (lock.flag == 2)) {
+                if ((lock.flag !=3)) {
                     lock.wait();
                 } else {
                     float dist59 = parseSignal.getDistance("192.168.1.59", 5459, 6);
