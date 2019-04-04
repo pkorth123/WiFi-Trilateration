@@ -19,7 +19,7 @@ import java.net.*;
 public class parseSignal {
 //removed main method, should only have to call getDistance() to start printing values
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ResourceLock lock = new ResourceLock();
 
         ThreadA a = new ThreadA(lock);
@@ -27,8 +27,11 @@ public class parseSignal {
         ThreadC c = new ThreadC(lock);
 
         a.start();
+        Thread.sleep(3000);
         b.start();
+        Thread.sleep(3000);
         c.start();
+        Thread.sleep(3000);
 
     }
 
@@ -42,6 +45,35 @@ public class parseSignal {
         }
         return signal;
     }
+
+    String line;
+
+    public String getStream(String host, int portNumber) throws IOException {
+
+        Socket liveDump = new Socket(host, portNumber);
+        BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
+        line = in.readLine();
+
+        while ((line = in.readLine()) != null) {
+            return line;
+        }
+        return line;
+
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    float distance;
+
+    public float getDistance(int n) {
+        float signal = getSignalStrength(line);
+        distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
+        return distance;
+    }
+}
+
 //parse out seconds from time stamp
 /*
     public static float getSecond(String line) {
@@ -52,19 +84,4 @@ public class parseSignal {
         second = Float.parseFloat(m.group());
         return second;
     }
-*/
-    public static float getDistance(String host, int portNumber, float n) throws IOException {
-
-        Socket liveDump = new Socket(host, portNumber);
-        BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
-        String line = null;
-        float distance = 0;
-
-        while ((line = in.readLine()) != null) {
-            float signal = getSignalStrength(in.readLine());
-            distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
-            return distance;
-        }
-        return distance;
-    }
-}
+ */
