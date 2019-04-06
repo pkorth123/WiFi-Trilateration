@@ -19,31 +19,32 @@ public class ThreadB extends Thread {
     ThreadB(ResourceLock lock) {
         this.lock = lock;
     }
+    float dist58 = 0;
 
     @Override
     public void run() {
         try {
-            float dist58 = 0;
+
             int n = 6;
             Socket liveDump58 = new Socket("192.168.1.58", 5458);
             BufferedReader in = new BufferedReader(new InputStreamReader(liveDump58.getInputStream()));
             String line = in.readLine();
             while (true) {
-                line =in.readLine();
+                line = in.readLine();
                 try {
                     synchronized (lock) {
-                        
+
                         if (lock.flag != 2) {
                             lock.wait();
                         } else {
-                            
+
                             dist58 = (float) Math.pow(10, ((10 - (parseSignal.getSignalStrength(line))) / (10 * n)));
-                            System.out.println(dist58 + "   58");
+                           System.out.println(dist58 + "   58");
                             Thread.sleep(1000);
                             lock.flag = 3;
                             lock.notifyAll();
                         }
-                        
+
                     }
                 } catch (Exception e) {
                     System.out.println("Exception 1 :" + e.getMessage());
@@ -53,6 +54,10 @@ public class ThreadB extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(ThreadA.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public float getDist58() {
+        return dist58;
     }
 
 }
