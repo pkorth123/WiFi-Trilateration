@@ -5,6 +5,7 @@
  */
 package signal_parsing;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -27,12 +28,26 @@ public class parseSignal {
         ThreadC c = new ThreadC(lock);
 
         a.start();
-        Thread.sleep(3000);
+        a.sleep(3000);
         b.start();
-        Thread.sleep(3000);
+        b.sleep(3000);
         c.start();
-        Thread.sleep(3000);
+        c.sleep(3000);
+        while (true) {
+            float dist57 = a.getDist57();
+            a.sleep(1000);
+           // System.out.println(dist57);
 
+            float dist58 = b.getDist58();
+            b.sleep(1000);
+           // System.out.println(dist58);
+
+            float dist59 = c.getDist59();
+            c.sleep(1000);
+           // System.out.println(dist59);
+
+            System.out.println(parseSignal.getCoordinates(dist57, dist58, dist59));
+        }
     }
 
     public static float getSignalStrength(String line) {
@@ -71,6 +86,24 @@ public class parseSignal {
         float signal = getSignalStrength(line);
         distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
         return distance;
+    }
+
+    public static Point2D getCoordinates(float dist57, float dist58, float dist59) {
+        Point2D coordinates = new Point2D.Float(0, 0);
+        Point2D ap57 = new Point2D.Float((float) 9.65, 1);
+        Point2D ap58 = new Point2D.Float(1, (float) 2.2);
+        Point2D ap59 = new Point2D.Float((float) 4.6, 9);
+
+        double x = 0;
+        double y = 0;
+
+        x = (((Math.pow(dist57, 2)) - (Math.pow(dist58, 2)) + (Math.pow(ap58.getX(), 2))) / (2 * (ap58.getX())));
+
+        y = ((Math.pow(dist57, 2)) - (Math.pow(dist59, 2) + (Math.pow((ap59.getX()), 2)) + (Math.pow(ap59.getY(), 2)) - (2 * (ap59.getX()) * (ap57.getX())))) / (2 * (ap59.getY()));
+
+        coordinates.setLocation(x, y);
+
+        return coordinates;
     }
 }
 
