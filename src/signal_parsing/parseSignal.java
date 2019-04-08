@@ -37,50 +37,38 @@ public class parseSignal {
             float dist57 = a.getDist57();
 
             a.sleep(100);
-           // System.out.println(dist57);
+            // System.out.println(dist57);
 
             float dist58 = b.getDist58();
 
             b.sleep(100);
-           // System.out.println(dist58);
+            // System.out.println(dist58);
 
             float dist59 = c.getDist59();
 
             c.sleep(100);
             //System.out.println(dist59);
-            
+            Thread.sleep(700);
+
             System.out.println(parseSignal.getCoordinates(dist57, dist58, dist59));
         }
     }
 
     public static float getSignalStrength(String line) {
         float signal = 0;
-    //    Pattern wep = Pattern.compile("WEP");
-     //   Matcher match = wep.matcher(line);
-      //  if (match.find() != true) {
-            Pattern p = Pattern.compile("[-][0-9][0-9]");
-            Matcher m = p.matcher(line);
-            if (m.find() == true){
+        //    Pattern wep = Pattern.compile("WEP");
+        //   Matcher match = wep.matcher(line);
+        //  if (match.find() != true) {
+        Pattern p = Pattern.compile("[-][0-9][0-9]");
+        Matcher m = p.matcher(line);
+        if (m.find() == true) {
             signal = Float.parseFloat(m.group());
-    //    }
-            }
+            //    }
+        }
         return signal;
     }
 
     String line;
-
-    public String getStream(String host, int portNumber) throws IOException {
-
-        Socket liveDump = new Socket(host, portNumber);
-        BufferedReader in = new BufferedReader(new InputStreamReader(liveDump.getInputStream()));
-        line = in.readLine();
-
-        while ((line = in.readLine()) != null) {
-            return line;
-        }
-        return line;
-
-    }
 
     public String getLine() {
         return line;
@@ -88,27 +76,23 @@ public class parseSignal {
 
     float distance;
 
-    public float getDistance(int n) {
-        float signal = getSignalStrength(line);
-        distance = (float) Math.pow(10, ((10 + (-(signal))) / (10 * n)));
-        return distance;
-    }
-
-    public static Point2D getCoordinates(float dist57, float dist58, float dist59) {
-        Point2D coordinates = new Point2D.Float(0, 0);
-        Point2D p1 = new Point2D.Float(0, 0);
-        Point2D p2 = new Point2D.Float((float) 6.5, 0);
-        Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
-
+    Point2D p1 = new Point2D.Float(0, 0);
+    Point2D p2 = new Point2D.Float((float) 6.5, 0);
+    Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
+    static double x1 = 0, x2 = 6.5, x3 = 3.85, y1 = 0, y2 = 0, y3 = 5.8;
+    static double A = ((-2 * x1) + (2 * x2));
+    static double B = ((-2 * y1) + (2 * y2));
+    static double D = ((-2 * x2) + (2 * x3));
+    static double E = ((-2 * y2) + (2 * y3));
+    public static Point2D getCoordinates(float d1, float d2, float d3) {
+        double C = ((Math.pow(d1, 2)) - (Math.pow(d2, 2)) - (Math.pow(x1, 2)) + (Math.pow(x2, 2)) - (Math.pow(y1, 2)) + (Math.pow(y2, 2)));
+        double F = ((Math.pow(d2, 2)) - (Math.pow(d3, 2)) - (Math.pow(x2, 2)) + (Math.pow(x3, 2)) - (Math.pow(y2, 2)) + (Math.pow(y3, 2)));
         double x = 0;
         double y = 0;
-
-        x = (((Math.pow(dist57, 2)) - (Math.pow(dist58, 2)) + (Math.pow(p2.getX(), 2))) / (2 * (p2.getX())));
-
-        y = ((Math.pow(dist57, 2)) - (Math.pow(dist59, 2) + (Math.pow((p3.getX()), 2)) + (Math.pow(p3.getY(), 2)) - (2 * (p3.getX()) * x))) / (2 * (p3.getY()));
-
+        Point2D coordinates = new Point2D.Float(0, 0);
+        x = (((C * E) - (F * B)) / ((E * A) - (B * D)));
+        y = (((C * D) - (A * F)) / ((B * D) - (A * E)));
         coordinates.setLocation(x, y);
-
         return coordinates;
     }
 }
