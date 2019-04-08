@@ -28,36 +28,42 @@ public class parseSignal {
         ThreadC c = new ThreadC(lock);
 
         a.start();
-        a.sleep(3000);
+        a.sleep(100);
         b.start();
-        b.sleep(3000);
+        b.sleep(100);
         c.start();
-        c.sleep(3000);
+        c.sleep(100);
         while (true) {
             float dist57 = a.getDist57();
-            a.sleep(1000);
+
+            a.sleep(100);
            // System.out.println(dist57);
 
             float dist58 = b.getDist58();
-            b.sleep(1000);
+
+            b.sleep(100);
            // System.out.println(dist58);
 
             float dist59 = c.getDist59();
-            c.sleep(1000);
-           // System.out.println(dist59);
 
+            c.sleep(100);
+            //System.out.println(dist59);
+            
             System.out.println(parseSignal.getCoordinates(dist57, dist58, dist59));
         }
     }
 
     public static float getSignalStrength(String line) {
         float signal = 0;
-        if (line != null) {
+    //    Pattern wep = Pattern.compile("WEP");
+     //   Matcher match = wep.matcher(line);
+      //  if (match.find() != true) {
             Pattern p = Pattern.compile("[-][0-9][0-9]");
             Matcher m = p.matcher(line);
-            m.find();
+            if (m.find() == true){
             signal = Float.parseFloat(m.group());
-        }
+    //    }
+            }
         return signal;
     }
 
@@ -90,16 +96,16 @@ public class parseSignal {
 
     public static Point2D getCoordinates(float dist57, float dist58, float dist59) {
         Point2D coordinates = new Point2D.Float(0, 0);
-        Point2D ap57 = new Point2D.Float((float) 9.65, 1);
-        Point2D ap58 = new Point2D.Float(1, (float) 2.2);
-        Point2D ap59 = new Point2D.Float((float) 4.6, 9);
+        Point2D p1 = new Point2D.Float(0, 0);
+        Point2D p2 = new Point2D.Float((float) 6.5, 0);
+        Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
 
         double x = 0;
         double y = 0;
 
-        x = (((Math.pow(dist57, 2)) - (Math.pow(dist58, 2)) + (Math.pow(ap58.getX(), 2))) / (2 * (ap58.getX())));
+        x = (((Math.pow(dist57, 2)) - (Math.pow(dist58, 2)) + (Math.pow(p2.getX(), 2))) / (2 * (p2.getX())));
 
-        y = ((Math.pow(dist57, 2)) - (Math.pow(dist59, 2) + (Math.pow((ap59.getX()), 2)) + (Math.pow(ap59.getY(), 2)) - (2 * (ap59.getX()) * (ap57.getX())))) / (2 * (ap59.getY()));
+        y = ((Math.pow(dist57, 2)) - (Math.pow(dist59, 2) + (Math.pow((p3.getX()), 2)) + (Math.pow(p3.getY(), 2)) - (2 * (p3.getX()) * x))) / (2 * (p3.getY()));
 
         coordinates.setLocation(x, y);
 
