@@ -15,10 +15,11 @@ import java.util.logging.Logger;
 public class ThreadC extends Thread {
 
     float dist59 = 0;
-    float n = 8;
-    int txPower = 20;
+    float n = 9;
+    int txPower = 24;
     String line;
-
+    String host = "192.168.1.59";
+    int port = 5459;
     ResourceLock lock;
 
     ThreadC(ResourceLock lock) {
@@ -28,12 +29,12 @@ public class ThreadC extends Thread {
     @Override
     public void run() {
         try {
-            Socket liveDump57 = new Socket("192.168.1.59", 5459);
+            Socket liveDump57 = new Socket(host, port);
             while (true) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(liveDump57.getInputStream()));
                 line = in.readLine();
                 if (!in.readLine().isEmpty()) {
-                    float signal = parseSignal.getSignalStrength(line);
+                    float signal = Parser.getSignalStrength(line);
                     try {
                         synchronized (lock) {
 
