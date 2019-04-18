@@ -45,16 +45,11 @@ public class ThreadA extends Thread {
                                 lock.wait();
                             } else {
                                 dist57 = Math.pow(10, ((txPower - signal) / (10 * n)));
- 
-                                if (dist57 == 0)// || (dist57 >= (dist57Prev + 10)) || (dist57 <= (dist57Prev - 10))) 
-                                {
-                                    run();
-                                } else {//if dist57 was not assigned a value, run again
                                     dist57Prev = dist57;
                                     Thread.sleep(100);
                                     lock.flag = 2;
                                     lock.notifyAll();
-                                }
+                                
                             }
 
                         }
