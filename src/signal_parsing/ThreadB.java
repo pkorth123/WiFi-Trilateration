@@ -44,10 +44,11 @@ public class ThreadB extends Thread {
                                 dist58 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
                                 if (dist58 == 0) {
                                     run();
-                                }//if dist58 was not assigned a value, run again
-                                Thread.sleep(100);
-                                lock.flag = 3;
-                                lock.notifyAll();
+                                } else {//if dist58 was not assigned a value, run again
+                                    Thread.sleep(100);
+                                    lock.flag = 3;
+                                    lock.notifyAll();
+                                }
                             }
 
                         }

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class ThreadA extends Thread {
 
     double dist57 = 0;
+    double dist57Prev = 0;
     float n = 9;
     int txPower = 24;
     String line;
@@ -26,6 +27,7 @@ public class ThreadA extends Thread {
     ThreadA(ResourceLock lock) {
         this.lock = lock;
     }
+
     @Override
     public void run() {
         try {
@@ -43,12 +45,16 @@ public class ThreadA extends Thread {
                                 lock.wait();
                             } else {
                                 dist57 = Math.pow(10, ((txPower - signal) / (10 * n)));
-                                if (dist57 == 0) {
+ 
+                                if (dist57 == 0)// || (dist57 >= (dist57Prev + 10)) || (dist57 <= (dist57Prev - 10))) 
+                                {
                                     run();
-                                }//if dist57 was not assigned a value, run again
-                                Thread.sleep(100);
-                                lock.flag = 2;
-                                lock.notifyAll();
+                                } else {//if dist57 was not assigned a value, run again
+                                    dist57Prev = dist57;
+                                    Thread.sleep(100);
+                                    lock.flag = 2;
+                                    lock.notifyAll();
+                                }
                             }
 
                         }
