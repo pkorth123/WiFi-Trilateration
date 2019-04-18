@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class ThreadA extends Thread {
 
-    float dist57 = 0;
+    double dist57 = 0;
     float n = 9;
     int txPower = 24;
     String line;
@@ -26,12 +26,12 @@ public class ThreadA extends Thread {
     ThreadA(ResourceLock lock) {
         this.lock = lock;
     }
-
     @Override
     public void run() {
         try {
             Socket liveDump57 = new Socket(host, port);
             while (true) {
+                dist57 = 0;
                 BufferedReader in = new BufferedReader(new InputStreamReader(liveDump57.getInputStream()));
                 line = in.readLine();
                 if (!in.readLine().isEmpty()) {
@@ -42,8 +42,10 @@ public class ThreadA extends Thread {
                             if (lock.flag != 1) {
                                 lock.wait();
                             } else {
-                                dist57 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
-                                //System.out.println(dist57 + "   57");
+                                dist57 = Math.pow(10, ((txPower - signal) / (10 * n)));
+                                if (dist57 == 0) {
+                                    run();
+                                }//if dist57 was not assigned a value, run again
                                 Thread.sleep(100);
                                 lock.flag = 2;
                                 lock.notifyAll();
@@ -61,7 +63,7 @@ public class ThreadA extends Thread {
         }
     }
 
-    public float getDist57() {
+    public double getDist57() {
         return dist57;
     }
 

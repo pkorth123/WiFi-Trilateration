@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class ThreadC extends Thread {
 
-    float dist59 = 0;
+    double dist59 = 0;
     float n = 9;
     int txPower = 24;
     String line;
@@ -42,6 +42,9 @@ public class ThreadC extends Thread {
                                 lock.wait();
                             } else {
                                 dist59 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
+                                if (dist59 == 0) {
+                                    run();
+                                }//if dist59 was not assigned a value, run again
                                 Thread.sleep(100);
                                 lock.flag = 1;
                                 lock.notifyAll();
@@ -59,7 +62,7 @@ public class ThreadC extends Thread {
         }
     }
 
-    public float getDist59() {
+    public double getDist59() {
         return dist59;
     }
 

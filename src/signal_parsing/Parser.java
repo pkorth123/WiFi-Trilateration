@@ -32,11 +32,11 @@ public class Parser {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame();//Frame init
         File f = new File("C:\\Users\\Pat\\Desktop\\burning.jpg");
         final BufferedImage img = ImageIO.read(f);
         
-        JPanel canvas = new JPanel() {
+        JPanel canvas = new JPanel() {//override
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

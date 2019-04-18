@@ -14,13 +14,12 @@ import java.util.logging.Logger;
 
 public class ThreadB extends Thread {
 
-    float dist58 = 0;
+    double dist58 = 0;
     float n = 9;
     int txPower = 24;
     String line;
     String host = "192.168.1.58";
     int port = 5458;
-
     ResourceLock lock;
 
     ThreadB(ResourceLock lock) {
@@ -43,7 +42,9 @@ public class ThreadB extends Thread {
                                 lock.wait();
                             } else {
                                 dist58 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
-                                //System.out.println(dist57 + "   57");
+                                if (dist58 == 0) {
+                                    run();
+                                }//if dist58 was not assigned a value, run again
                                 Thread.sleep(100);
                                 lock.flag = 3;
                                 lock.notifyAll();
@@ -61,7 +62,7 @@ public class ThreadB extends Thread {
         }
     }
 
-    public float getDist58() {
+    public double getDist58() {
         return dist58;
     }
 
