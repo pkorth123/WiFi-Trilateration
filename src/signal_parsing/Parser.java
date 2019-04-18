@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- *comment to gernerate commit
+ *comment to generate commit
  * @author Pat
  */
 public class Parser {
