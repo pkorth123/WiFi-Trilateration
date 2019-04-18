@@ -1,9 +1,7 @@
 package signal_parsing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,9 +31,8 @@ public class Parser {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         JFrame frame = new JFrame();//Frame init
-        File f = new File("C:\\Users\\Pat\\Desktop\\burning.jpg");
-        final BufferedImage img = ImageIO.read(f);
-        
+        File f = new File("src/Images/TillyGirl.jpg");
+        BufferedImage img = ImageIO.read(f);        
         JPanel canvas = new JPanel() {//override
             @Override
             protected void paintComponent(Graphics g) {
@@ -44,7 +41,7 @@ public class Parser {
             }
         };
 
-        BackgroundPanel background = new BackgroundPanel(img, BackgroundPanel.ACTUAL);
+        BackgroundPanel background = new BackgroundPanel(img);
         frame.setContentPane(background);
         frame.add(canvas);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
