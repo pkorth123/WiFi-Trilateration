@@ -20,9 +20,9 @@ public class ThreadB extends Thread {
     String line;
     String host = "192.168.1.58";
     int port = 5458;
-    ResourceLock lock;
+    Lock lock;
 
-    ThreadB(ResourceLock lock) {
+    ThreadB(Lock lock) {
         this.lock = lock;
     }
 
@@ -42,13 +42,11 @@ public class ThreadB extends Thread {
                                 lock.wait();
                             } else {
                                 dist58 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
-                                if (dist58 == 0) {
-                                    run();
-                                } else {//if dist58 was not assigned a value, run again
-                                    Thread.sleep(100);
-                                    lock.flag = 3;
-                                    lock.notifyAll();
-                                }
+
+                                Thread.sleep(100);
+                                lock.flag = 3;
+                                lock.notifyAll();
+
                             }
 
                         }

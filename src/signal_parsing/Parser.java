@@ -41,14 +41,14 @@ public class Parser {
             }
         };
 
-        BackgroundPanel background = new BackgroundPanel(img);
+        BackgroundImage background = new BackgroundImage(img);
         frame.setContentPane(background);
         frame.add(canvas);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(1920, 1080);
         frame.setVisible(true);
 
-        ResourceLock lock = new ResourceLock();
+        Lock lock = new Lock();
         ThreadA a = new ThreadA(lock);
         ThreadB b = new ThreadB(lock);
         ThreadC c = new ThreadC(lock);

@@ -22,9 +22,9 @@ public class ThreadA extends Thread {
     String host = "192.168.1.57";
     int port = 5457;
 
-    ResourceLock lock;
+    Lock lock;
 
-    ThreadA(ResourceLock lock) {
+    ThreadA(Lock lock) {
         this.lock = lock;
     }
 
@@ -40,7 +40,6 @@ public class ThreadA extends Thread {
                     float signal = Parser.getSignalStrength(line);
                     try {
                         synchronized (lock) {
-
                             if (lock.flag != 1) {
                                 lock.wait();
                             } else {
@@ -48,8 +47,7 @@ public class ThreadA extends Thread {
                                     dist57Prev = dist57;
                                     Thread.sleep(100);
                                     lock.flag = 2;
-                                    lock.notifyAll();
-                                
+                                    lock.notifyAll();                               
                             }
 
                         }
