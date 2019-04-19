@@ -12,17 +12,17 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- * 
+ *
  * @author Pat
  */
 public class Parser {
 
-    static int width = 1920;
-    static int height = 1080;
+    static int width = 1021;
+    static int height = 975;
     Point2D p1 = new Point2D.Float(0, 0);
     Point2D p2 = new Point2D.Float((float) 6.5, 0);
     Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
-    static double x1 = 0, x2 = 6.5, x3 = 3.85, y1 = 0, y2 = 0, y3 = 5.8;
+    static double x1 = 1, x2 = 23, x3 = 23, y1 = 12.5, y2 = 24, y3 = 1;
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
     static double D = ((-2 * x2) + (2 * x3));
@@ -31,8 +31,8 @@ public class Parser {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         JFrame frame = new JFrame();//Frame init
-        File f = new File("src/Images/TillyGirl.jpg");
-        BufferedImage img = ImageIO.read(f);        
+        File f = new File("src/Images/TestingMap.jpg");
+        BufferedImage img = ImageIO.read(f);
         JPanel canvas = new JPanel() {//override
             @Override
             protected void paintComponent(Graphics g) {
@@ -45,7 +45,7 @@ public class Parser {
         frame.setContentPane(background);
         frame.add(canvas);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.setSize(1920, 1080);
+        frame.setSize(width, height);
         frame.setVisible(true);
 
         Lock lock = new Lock();
@@ -71,15 +71,17 @@ public class Parser {
             double dist59 = c.getDist59();
             c.sleep(100);
 
-            Thread.sleep(700);
+            Thread.sleep(400);
             x = ((Parser.getCoordinates(dist57, dist58, dist59).getX()) * mult);
             y = ((Parser.getCoordinates(dist57, dist58, dist59).getY()) * mult);
-            System.out.println("(" + (x) + ", " + (y) + ")");
-                    Graphics g = img.getGraphics(); g.setColor(Color.red);
-            
-            g.fillOval((int) x, (int) y, 50, 50);
-            g.dispose();
-            canvas.repaint();
+            if ((dist57 != 0) && (dist58 != 0) && (dist59 != 0)) {//don't print if any of the AP's did not receive a value
+                System.out.println("(" + (x) + ", " + (y) + ")");
+                Graphics g = img.getGraphics();
+                g.setColor(Color.red);
+                g.fillOval((int) x, (int) y, 50, 50);
+                g.dispose();
+                canvas.repaint();
+            }
 
         }
 
