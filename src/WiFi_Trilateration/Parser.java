@@ -17,12 +17,17 @@ import javax.swing.*;
  */
 public class Parser {
 
-    static int width = 1021;//graphical display width
-    static int height = 975;//graphical display height
+    static int frameWidth = 1021;//graphical display width
+    static int frameHeight = 975;//graphical display height
+    static int envWidth = 10;
+    static int envHeight = 10;
+    static double scaleX = (frameWidth/envWidth)*1.1;//multiplier for scaling output width to frame with 10% margin
+    static double scaleY = (frameHeight/envWidth)*1.1;//multiplier for scaling output height to frame with 10% margin
+    
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        JFrame frame = new JFrame();//rame init
+        JFrame frame = new JFrame();//frame init
         File f = new File("src/Images/TestingMap.jpg");
         BufferedImage img = ImageIO.read(f);
         JPanel canvas = new JPanel() {//override paintComponent to draw on JFrame/background
@@ -37,7 +42,7 @@ public class Parser {
         frame.setContentPane(background);//set created background object on JFrame
         frame.add(canvas); //add paintComponent override to canvas
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.setSize(width, height);//set frame size
+        frame.setSize(frameWidth, frameHeight);//set frame size
         frame.setVisible(true);
 
         Lock lock = new Lock();//make new lock object
@@ -45,35 +50,35 @@ public class Parser {
         ThreadB b = new ThreadB(lock);//thread for ap2
         ThreadC c = new ThreadC(lock);//thread for ap3
         a.start();
-      //  a.sleep(100);
+        a.sleep(300);
         b.start();
-      //  b.sleep(100);
+        b.sleep(300);
         c.start();
-      //  c.sleep(100);
+        c.sleep(300);
         double x;
         double y;
-        int mult = 10;//scale output points to fit frame dimensions
+        int mult = 100;//scale output points to fit frame dimensions
         while (true) {
             double dist57 = a.getDist57();
-            a.sleep(100);
+            a.sleep(300);
 
             double dist58 = b.getDist58();
-            b.sleep(100);
+            b.sleep(300);
 
             double dist59 = c.getDist59();
-            c.sleep(100);
+            c.sleep(300);
 
-            Thread.sleep(400);
-            x = ((Parser.getCoordinates(dist57, dist58, dist59).getX()) * mult);
-            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY()) * mult);
-            if ((dist57 != 0) && (dist58 != 0) && (dist59 != 0)) {//don't print if any of the AP's did not receive a value
+            //Thread.sleep(400);
+            x = ((Parser.getCoordinates(dist57, dist58, dist59).getX())*scaleX);
+            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY())*scaleY);
+            //if ((dist57 != 0) && (dist58 != 0) && (dist59 != 0)) {//don't print if any of the AP's did not receive a value
                 System.out.println("(" + (x) + ", " + (y) + ")"); //print coordinates
                 Graphics g = img.getGraphics();
                 g.setColor(Color.red);
                 g.fillOval((int) x, (int) y, 50, 50);
                 g.dispose();
                 canvas.repaint();
-            }
+           // }
 
         }
 
@@ -94,7 +99,7 @@ public class Parser {
     Point2D p2 = new Point2D.Float((float) 6.5, 0);
     Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
     //place holders for x and y values below
-    static double x1 = 1, x2 = 23, x3 = 23, y1 = 12.5, y2 = 24, y3 = 1;
+    static double x1 = 6, x2 = 1, x3 = 7, y1 = 1, y2 = 7, y3 = 7;
     //place holders for expressions to be plugged in
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
