@@ -19,8 +19,8 @@ public class Parser {
 
     static int frameWidth = 1021;//graphical display width
     static int frameHeight = 975;//graphical display height
-    static int envWidth = 10;
-    static int envHeight = 10;
+    static int envWidth = 24;//multiplier for scaling height
+    static int envHeight = 25;//multiplier for scaling width
     static double scaleX = (frameWidth/envWidth);//multiplier for scaling output width to frame 
     static double scaleY = (frameHeight/envWidth);//multiplier for scaling output height to frame 
     
@@ -97,7 +97,7 @@ public class Parser {
     Point2D p2 = new Point2D.Float((float) 6.5, 0);
     Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
     //place holders for x and y values below
-    static double x1 = 6, x2 = 1, x3 = 7, y1 = 1, y2 = 7, y3 = 7;
+    static double x1 = 1, x2 = 10.5, x3 = 23, y1 = 1, y2 = 13.5, y3 = 1;
     //place holders for expression
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
