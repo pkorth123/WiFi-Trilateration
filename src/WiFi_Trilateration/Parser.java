@@ -69,7 +69,7 @@ public class Parser {
             Thread.sleep(1000);
             x = ((Parser.getCoordinates(dist57, dist58, dist59).getX()));
             y = ((Parser.getCoordinates(dist57, dist58, dist59).getY()));
-            y = Math.abs((envHeight - y));
+            y = envHeight - y;
                 System.out.println("(" + (x) + ", " + (y) + ")"); //print coordinates
                 Graphics g = img.getGraphics();
                 g.setColor(Color.red);
