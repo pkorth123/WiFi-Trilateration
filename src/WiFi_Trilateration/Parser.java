@@ -21,14 +21,14 @@ public class Parser {
     static int frameHeight = 975;//graphical display height
     static int envWidth = 10;
     static int envHeight = 10;
-    static double scaleX = (frameWidth/envWidth)*1.1;//multiplier for scaling output width to frame with 10% margin
-    static double scaleY = (frameHeight/envWidth)*1.1;//multiplier for scaling output height to frame with 10% margin
+    static double scaleX = (frameWidth/envWidth);//multiplier for scaling output width to frame 
+    static double scaleY = (frameHeight/envWidth);//multiplier for scaling output height to frame 
     
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
         JFrame frame = new JFrame();//frame init
-        File f = new File("src/Images/TestingMap.jpg");
+        File f = new File("src/Images/TestingMap1.jpg");
         BufferedImage img = ImageIO.read(f);
         JPanel canvas = new JPanel() {//override paintComponent to draw on JFrame/background
             @Override
@@ -50,35 +50,33 @@ public class Parser {
         ThreadB b = new ThreadB(lock);//thread for ap2
         ThreadC c = new ThreadC(lock);//thread for ap3
         a.start();
-        a.sleep(300);
         b.start();
-        b.sleep(300);
         c.start();
-        c.sleep(300);
+        Thread.sleep(5000);//give AP's time to pull an initial value
         double x;
         double y;
-        int mult = 100;//scale output points to fit frame dimensions
+     
         while (true) {
             double dist57 = a.getDist57();
-            a.sleep(300);
+           // Thread.sleep(300);
 
             double dist58 = b.getDist58();
-            b.sleep(300);
+           // Thread.sleep(300);
 
             double dist59 = c.getDist59();
-            c.sleep(300);
+           // Thread.sleep(400);
 
-            //Thread.sleep(400);
+            Thread.sleep(2000);
             x = ((Parser.getCoordinates(dist57, dist58, dist59).getX())*scaleX);
-            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY())*scaleY);
-            //if ((dist57 != 0) && (dist58 != 0) && (dist59 != 0)) {//don't print if any of the AP's did not receive a value
+            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY())*scaleY);  
                 System.out.println("(" + (x) + ", " + (y) + ")"); //print coordinates
                 Graphics g = img.getGraphics();
                 g.setColor(Color.red);
                 g.fillOval((int) x, (int) y, 50, 50);
+                g.setColor(Color.black);
+                g.drawString("(" + (int)x + ", " + (int)y + ")", (int)x, (int)y);
                 g.dispose();
                 canvas.repaint();
-           // }
 
         }
 
@@ -100,7 +98,7 @@ public class Parser {
     Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
     //place holders for x and y values below
     static double x1 = 6, x2 = 1, x3 = 7, y1 = 1, y2 = 7, y3 = 7;
-    //place holders for expressions to be plugged in
+    //place holders for expression
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
     static double D = ((-2 * x2) + (2 * x3));
@@ -110,11 +108,11 @@ public class Parser {
         
         double C = ((Math.pow(d1, 2)) - (Math.pow(d2, 2)) - (Math.pow(x1, 2)) + (Math.pow(x2, 2)) - (Math.pow(y1, 2)) + (Math.pow(y2, 2)));//create more reference shortcuts for substitution
         double F = ((Math.pow(d2, 2)) - (Math.pow(d3, 2)) - (Math.pow(x2, 2)) + (Math.pow(x3, 2)) - (Math.pow(y2, 2)) + (Math.pow(y3, 2)));
-        double x = 0;
-        double y = 0;
+        double x =(((C * E) - (F * B)) / ((E * A) - (B * D)));;
+        double y = (((C * D) - (A * F)) / ((B * D) - (A * E)));
         Point2D coordinates = new Point2D.Float(0, 0);
-        x = (((C * E) - (F * B)) / ((E * A) - (B * D)));
-        y = (((C * D) - (A * F)) / ((B * D) - (A * E)));
+       
+        
         coordinates.setLocation(x, y);
         return coordinates;
     }
