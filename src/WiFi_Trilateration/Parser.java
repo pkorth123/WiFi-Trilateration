@@ -22,7 +22,7 @@ public class Parser {
     static int envWidth = 24;//multiplier for scaling height
     static int envHeight = 25;//multiplier for scaling width
     static double scaleX = (frameWidth/envWidth);//multiplier for scaling output width to frame 
-    static double scaleY = (frameHeight/envWidth);//multiplier for scaling output height to frame 
+    static double scaleY = (frameHeight/envHeight);//multiplier for scaling output height to frame
     
 
     public static void main(String[] args) throws IOException, InterruptedException {
