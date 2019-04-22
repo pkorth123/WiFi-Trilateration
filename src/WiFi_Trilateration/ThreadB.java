@@ -17,7 +17,7 @@ public class ThreadB extends Thread {
     double dist58;
     double dist58Prev;
     double n = 6;
-    int txPower = 20;
+    int txPower = 24;
     String line;
     String host = "192.168.1.58";
     int port = 5458;

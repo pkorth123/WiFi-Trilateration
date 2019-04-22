@@ -17,7 +17,7 @@ public class ThreadC extends Thread {
     double dist59;
     double dist59Prev;
     float n = 6;
-    int txPower = 20;
+    int txPower = 24;
     String line;
     String host = "192.168.1.59";
     int port = 5459;

@@ -1,7 +1,6 @@
 package WiFi_Trilateration;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,8 +16,8 @@ import javax.swing.*;
  */
 public class Parser {
 
-    static int frameWidth = 1021;//graphical display width
-    static int frameHeight = 975;//graphical display height
+    static int frameWidth = 996;//graphical display width
+    static int frameHeight = 901;//graphical display height
     static int envWidth = 24;//multiplier for scaling height
     static int envHeight = 25;//multiplier for scaling width
     static double scaleX = (frameWidth/envWidth);//multiplier for scaling output width to frame 
@@ -52,10 +51,9 @@ public class Parser {
         a.start();
         b.start();
         c.start();
-        Thread.sleep(5000);//give AP's time to pull an initial value
+        Thread.sleep(10000);//give AP's time to pull an initial value
         double x;
         double y;
-     
         while (true) {
             double dist57 = a.getDist57();
            // Thread.sleep(300);
@@ -69,13 +67,16 @@ public class Parser {
             Thread.sleep(1000);
             x = ((Parser.getCoordinates(dist57, dist58, dist59).getX()));
             y = ((Parser.getCoordinates(dist57, dist58, dist59).getY()));
-            y = envHeight - y;
+            y = envHeight-y;//(0,0) is bottom left
                 System.out.println("(" + (x) + ", " + (y) + ")"); //print coordinates
                 Graphics g = img.getGraphics();
+                g.setColor(Color.white);
+                g.fillRect(850,25,100,50);
                 g.setColor(Color.red);
                 g.fillOval((int) (x*scaleX), (int) (y*scaleY), 50, 50);
                 g.setColor(Color.black);
-                g.drawString("(" + (int)x + ", " + (int)y + ")", (int)x, (int)y);
+                g.setFont(new Font("TimesRomam", Font.PLAIN, 20));
+                g.drawString("(" + (int)x + ", " + (int)y + ")", 850, 55);
                 g.dispose();
                 canvas.repaint();
 
@@ -94,7 +95,7 @@ public class Parser {
     }
 
     //place holders for x and y values below
-    static double x1 = 1, x2 = 10.5, x3 = 23, y1 = 1, y2 = 24, y3 = 1;
+    static double x1 = 1, x2 = 13.5, x3 = 23, y1 = 1, y2 = 24, y3 = 1;
     //place holders for expression
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
