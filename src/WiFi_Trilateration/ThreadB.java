@@ -15,11 +15,14 @@ import java.util.logging.Logger;
 public class ThreadB extends Thread {
 
     double dist58 = 0;
-    float n = 9;
-    int txPower = 24;
+    double dist58Prev = 0;
+    float n = 6;
+    int txPower = 34;
     String line;
     String host = "192.168.1.58";
     int port = 5458;
+    float signal;
+
     Lock lock;
 
     ThreadB(Lock lock) {
@@ -29,33 +32,30 @@ public class ThreadB extends Thread {
     @Override
     public void run() {
         try {
-            Socket liveStream58 = new Socket(host, port);
+            Socket liveStream58 = new Socket(host, port);//open connection
             while (true) {
-                dist58 = 0;
                 BufferedReader in = new BufferedReader(new InputStreamReader(liveStream58.getInputStream()));
-                line = in.readLine();
-                if (!in.readLine().isEmpty()) {
-                    float signal = Parser.getSignalStrength(line);
+                line = in.readLine(); //read a line
+               // if (!in.readLine().isEmpty()) {
+                    signal = Parser.getSignalStrength(line);
                     try {
                         synchronized (lock) {
-
                             if (lock.flag != 2) {
                                 lock.wait();
-                            } else {
-                                dist58 = (float) Math.pow(10, ((txPower - signal) / (10 * n)));
-
+                            } else if (signal != 0){
+                                dist58 = Math.pow(10, ((txPower - signal) / (10 * n)));//do the distance calulation
+                                dist58Prev = dist58;
+                                //System.out.println(signal);
                                 Thread.sleep(100);
-                                lock.flag = 3;
-                                lock.notifyAll();
-
+                                lock.flag = 3; //change lock
+                                lock.notifyAll(); //notify other threads of lock status       
                             }
-
                         }
                     } catch (Exception e) {
                         System.out.println("Exception 1 :" + e.getMessage());
                     }
 
-                }
+             //   }
             }
         } catch (IOException ex) {
             Logger.getLogger(ThreadA.class.getName()).log(Level.SEVERE, null, ex);
