@@ -16,8 +16,8 @@ public class ThreadA extends Thread {
 
     double dist57;
     double dist57Prev;
-    float n = 6;
-    int txPower = 34;//measured one meter reference signal strength of macbook air (dBm @ 1 meter)
+    double n = 6;
+    int txPower = 20;//measured one meter reference signal strength of macbook air (dBm @ 1 meter)
     String line;
     String host = "192.168.1.57";
     int port = 5457;

@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 
 public class ThreadB extends Thread {
 
-    double dist58 = 0;
-    double dist58Prev = 0;
-    float n = 6;
-    int txPower = 34;
+    double dist58;
+    double dist58Prev;
+    double n = 6;
+    int txPower = 20;
     String line;
     String host = "192.168.1.58";
     int port = 5458;

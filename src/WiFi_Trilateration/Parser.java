@@ -66,13 +66,14 @@ public class Parser {
             double dist59 = c.getDist59();
            // Thread.sleep(400);
 
-            Thread.sleep(2000);
-            x = ((Parser.getCoordinates(dist57, dist58, dist59).getX())*scaleX);
-            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY())*scaleY);  
+            Thread.sleep(1000);
+            x = ((Parser.getCoordinates(dist57, dist58, dist59).getX()));
+            y = ((Parser.getCoordinates(dist57, dist58, dist59).getY()));
+            y = Math.abs((envHeight - y));
                 System.out.println("(" + (x) + ", " + (y) + ")"); //print coordinates
                 Graphics g = img.getGraphics();
                 g.setColor(Color.red);
-                g.fillOval((int) x, (int) y, 50, 50);
+                g.fillOval((int) (x*scaleX), (int) (y*scaleY), 50, 50);
                 g.setColor(Color.black);
                 g.drawString("(" + (int)x + ", " + (int)y + ")", (int)x, (int)y);
                 g.dispose();
@@ -91,13 +92,9 @@ public class Parser {
         }
         return signal;
     }
-    
-    //AP coordinates
-    Point2D p1 = new Point2D.Float(0, 0);
-    Point2D p2 = new Point2D.Float((float) 6.5, 0);
-    Point2D p3 = new Point2D.Float((float) 3.85, (float) 5.8);
+
     //place holders for x and y values below
-    static double x1 = 1, x2 = 10.5, x3 = 23, y1 = 1, y2 = 13.5, y3 = 1;
+    static double x1 = 1, x2 = 10.5, x3 = 23, y1 = 1, y2 = 24, y3 = 1;
     //place holders for expression
     static double A = ((-2 * x1) + (2 * x2));
     static double B = ((-2 * y1) + (2 * y2));
@@ -110,7 +107,7 @@ public class Parser {
         double F = ((Math.pow(d2, 2)) - (Math.pow(d3, 2)) - (Math.pow(x2, 2)) + (Math.pow(x3, 2)) - (Math.pow(y2, 2)) + (Math.pow(y3, 2)));
         double x =(((C * E) - (F * B)) / ((E * A) - (B * D)));;
         double y = (((C * D) - (A * F)) / ((B * D) - (A * E)));
-        Point2D coordinates = new Point2D.Float(0, 0);
+        Point2D coordinates = new Point2D.Float();
        
         
         coordinates.setLocation(x, y);
